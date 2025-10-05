@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الذمم المالية - مطبعة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>متابعه الفلوس التي لي في الخارج</h1>
+            <p>إدارة واستقصاء المستحقات والديون بكفاءة</p>
+            <div class="printing-badge">نظام مخصص لمطبعه الاسراء</div>
+        </header>
+
+        <div class="stats-container">
+            <div class="stat-card total-card">
+                <h3 id="total-amount">0 ج.م</h3>
+                <p>إجمالي المستحقات</p>
+            </div>
+            <div class="stat-card count-card">
+                <h3 id="debtors-count">0</h3>
+                <p>عدد المدينين</p>
+            </div>
+            <div class="stat-card pending-card">
+                <h3 id="active-debts">0</h3>
+                <p>ديون قائمة</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>تسجيل مدين جديد</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="new-name">اسم المدين *</label>
+                    <input type="text" id="new-name" placeholder="أدخل اسم المدين">
+                </div>
+                <div class="form-group">
+                    <label for="new-amount">قيمة الدين (ج.م) *</label>
+                    <input type="number" id="new-amount" placeholder="المبلغ المستحق" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="new-phone">رقم الهاتف</label>
+                    <input type="tel" id="new-phone" placeholder="رقم الهاتف (اختياري)">
+                </div>
+            </div>
+            <button id="add-debt-btn" class="btn">
+                <i class="fas fa-plus-circle"></i> إضافة مدين جديد
+            </button>
+        </div>
+
+        <div class="search-section">
+            <h2>البحث عن المدينين</h2>
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="ابحث باسم المدين...">
+                <button id="clear-search" class="btn">
+                    <i class="fas fa-times"></i> مسح البحث
+                </button>
+            </div>
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="active">ديون قائمة</button>
+                <button class="filter-btn" data-filter="paid">مسددة</button>
+                <button class="filter-btn" data-filter="large">ديون كبيرة (أكثر من 1000 ج.م)</button>
+            </div>
+        </div>
+
+        <div class="debts-section">
+            <h2>سجل الذمم المالية</h2>
+            <div class="debts-grid" id="debts-container">
+                <div class="no-debts">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <p>لا توجد ديون مسجلة في النظام</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    <div class="modal" id="deduct-modal">
+        <div class="modal-content">
+            <h3>تسديد جزء من الدين</h3>
+            <input type="number" id="deduct-amount" class="modal-input" placeholder="المبلغ المسدد">
+            <textarea id="deduct-description" class="modal-textarea" placeholder="وصف التسديد (مثال: سداد مقابل طباعة كروت شخصية)"></textarea>
+            <div class="modal-buttons">
+                <button id="deduct-confirm" class="action-btn btn-deduct">تسديد</button>
+                <button id="deduct-cancel" class="action-btn btn-delete">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <h3>تعديل قيمة الدين</h3>
+            <input type="number" id="edit-amount" class="modal-input" placeholder="القيمة الجديدة للدين">
+            <div class="modal-buttons">
+                <button id="edit-confirm" class="action-btn btn-edit">حفظ التعديل</button>
+                <button id="edit-cancel" class="action-btn btn-delete">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="add-modal">
+        <div class="modal-content">
+            <h3>إضافة مبلغ للدين</h3>
+            <input type="number" id="add-amount" class="modal-input" placeholder="المبلغ المضاف للدين">
+            <textarea id="add-description" class="modal-textarea" placeholder="وصف الإضافة (مثال: إضافة قيمة طباعة بروشورات جديدة)"></textarea>
+            <div class="modal-buttons">
+                <button id="add-confirm" class="action-btn btn-add">إضافة</button>
+                <button id="add-cancel" class="action-btn btn-delete">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="history-modal">
+        <div class="modal-content">
+            <h3>سجل المعاملات</h3>
+            <div class="history-list" id="history-list">
+                <!-- سيتم ملء هذا القسم بالبيانات من JavaScript -->
+            </div>
+            <div class="modal-buttons">
+                <button id="history-close" class="action-btn btn-delete">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- إشعارات -->
+    <div class="notification" id="notification"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>
