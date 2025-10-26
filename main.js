@@ -1,9 +1,9 @@
-     // متغيرات التطبيق
-
+      // متغيرات التطبيق
         let debts = JSON.parse(localStorage.getItem('advertisements')) || [];
         let currentDebtId = null;
         let filteredDebts = [...debts];
         let currentFilter = 'all';
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
 
         // عناصر DOM
         const debtsContainer = document.getElementById('debts-container');
@@ -15,15 +15,27 @@
         const clearSearchBtn = document.getElementById('clear-search');
         const filterButtons = document.querySelectorAll('.filter-btn');
         const notification = document.getElementById('notification');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const deleteAllBtn = document.getElementById('delete-all-btn');
 
         // النوافذ المنبثقة
         const deductModal = document.getElementById('deduct-modal');
         const editModal = document.getElementById('edit-modal');
         const addModal = document.getElementById('add-modal');
         const historyModal = document.getElementById('history-modal');
+        const aboutModal = document.getElementById('about-modal');
+        const contactModal = document.getElementById('contact-modal');
+        const privacyModal = document.getElementById('privacy-modal');
+        const termsModal = document.getElementById('terms-modal');
 
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', () => {
+            // تطبيق وضع الدارك مود إذا كان مفعل
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> وضع النهار';
+            }
+            
             updateStats();
             renderDebts();
             setupEventListeners();
@@ -33,11 +45,11 @@
         function setupEventListeners() {
             // إضافة دين جديد
             addDebtBtn.addEventListener('click', addNewDebt);
-            
+
             // البحث
             searchInput.addEventListener('input', filterDebts);
             clearSearchBtn.addEventListener('click', clearSearch);
-            
+
             // التصفية
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -47,17 +59,76 @@
                     filterDebts();
                 });
             });
-            
-            // النوافذ المنبثقة
+
+            // زر الدارك مود
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+
+            // زر حذف جميع البيانات
+            deleteAllBtn.addEventListener('click', deleteAllData);
+
+            // النوافذ المنبثقة الأصلية
             document.getElementById('deduct-cancel').addEventListener('click', () => deductModal.style.display = 'none');
             document.getElementById('edit-cancel').addEventListener('click', () => editModal.style.display = 'none');
             document.getElementById('add-cancel').addEventListener('click', () => addModal.style.display = 'none');
             document.getElementById('history-close').addEventListener('click', () => historyModal.style.display = 'none');
-            
+
+            // النوافذ المنبثقة الجديدة
+            document.getElementById('about-close').addEventListener('click', () => aboutModal.style.display = 'none');
+            document.getElementById('contact-close').addEventListener('click', () => contactModal.style.display = 'none');
+            document.getElementById('privacy-close').addEventListener('click', () => privacyModal.style.display = 'none');
+            document.getElementById('terms-close').addEventListener('click', () => termsModal.style.display = 'none');
+
+            // روابط التنقل
+            document.getElementById('about-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                aboutModal.style.display = 'flex';
+            });
+
+            document.getElementById('contact-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.style.display = 'flex';
+            });
+
+            document.getElementById('privacy-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                privacyModal.style.display = 'flex';
+            });
+
+            document.getElementById('terms-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                termsModal.style.display = 'flex';
+            });
+
             // تأكيد الإجراءات
             document.getElementById('deduct-confirm').addEventListener('click', deductAmount);
             document.getElementById('edit-confirm').addEventListener('click', editDebtAmount);
             document.getElementById('add-confirm').addEventListener('click', addToDebtAmount);
+        }
+
+        // تبديل وضع الدارك مود
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            
+            if (isDarkMode) {
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> وضع النهار';
+            } else {
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> وضع الليل';
+            }
+            
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        // حذف جميع البيانات
+        function deleteAllData() {
+            if (confirm('هل أنت متأكد من حذف جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء!')) {
+                debts = [];
+                filteredDebts = [];
+                localStorage.removeItem('advertisements');
+                updateStats();
+                renderDebts();
+                showNotification('تم حذف جميع البيانات بنجاح');
+            }
         }
 
         // إضافة دين جديد
@@ -65,16 +136,16 @@
             const nameInput = document.getElementById('new-name');
             const amountInput = document.getElementById('new-amount');
             const phoneInput = document.getElementById('new-phone');
-            
+
             const name = nameInput.value.trim();
             const amount = parseInt(amountInput.value);
             const phone = phoneInput.value.trim();
-            
+
             if (!name || !amount || amount <= 0) {
                 showNotification('يرجى إدخال اسم المدين ومبلغ صحيح', 'error');
                 return;
             }
-            
+
             const newDebt = {
                 id: Date.now(),
                 name,
@@ -89,18 +160,18 @@
                     timestamp: new Date().getTime()
                 }]
             };
-            
+
             debts.push(newDebt);
             filteredDebts = [...debts];
             saveDebts();
             updateStats();
             renderDebts();
-            
+
             // إعادة تعيين الحقول
             nameInput.value = '';
             amountInput.value = '';
             phoneInput.value = '';
-            
+
             showNotification('تم إضافة المدين الجديد بنجاح');
         }
 
@@ -120,7 +191,7 @@
                 `;
                 return;
             }
-            
+
             debtsContainer.innerHTML = filteredDebts.map(debt => `
                 <div class="debt-card">
                     <h3>${debt.name}</h3>
@@ -150,7 +221,7 @@
         // تصفية الديون حسب البحث والتصفية
         function filterDebts() {
             const searchTerm = searchInput.value.trim().toLowerCase();
-            
+
             // التصفية حسب البحث
             let result = debts;
             if (searchTerm !== '') {
@@ -158,7 +229,7 @@
                     debt.name.toLowerCase().includes(searchTerm)
                 );
             }
-            
+
             // التصفية حسب النوع
             if (currentFilter === 'active') {
                 result = result.filter(debt => debt.amount > 0);
@@ -167,7 +238,7 @@
             } else if (currentFilter === 'large') {
                 result = result.filter(debt => debt.amount > 1000);
             }
-            
+
             filteredDebts = result;
             renderDebts();
         }
@@ -204,18 +275,18 @@
         function deductAmount() {
             const amount = parseInt(document.getElementById('deduct-amount').value);
             const description = document.getElementById('deduct-description').value.trim();
-            
+
             if (!amount || amount <= 0) {
                 showNotification('يرجى إدخال مبلغ صحيح', 'error');
                 return;
             }
-            
+
             const debtIndex = debts.findIndex(d => d.id === currentDebtId);
             if (debts[debtIndex].amount < amount) {
                 showNotification('المبلغ المطلوب تسديده أكبر من قيمة الدين', 'error');
                 return;
             }
-            
+
             debts[debtIndex].amount -= amount;
             debts[debtIndex].history.push({
                 id: generateId(),
@@ -225,26 +296,26 @@
                 date: new Date().toLocaleString('ar-EG'),
                 timestamp: new Date().getTime()
             });
-            
+
             saveDebts();
             updateStats();
             renderDebts();
             deductModal.style.display = 'none';
-            
             showNotification('تم تسديد المبلغ بنجاح');
         }
 
         function editDebtAmount() {
             const amount = parseInt(document.getElementById('edit-amount').value);
+
             if (!amount || amount <= 0) {
                 showNotification('يرجى إدخال مبلغ صحيح', 'error');
                 return;
             }
-            
+
             const debtIndex = debts.findIndex(d => d.id === currentDebtId);
             const oldAmount = debts[debtIndex].amount;
             debts[debtIndex].amount = amount;
-            
+
             debts[debtIndex].history.push({
                 id: generateId(),
                 type: 'edit',
@@ -254,27 +325,26 @@
                 date: new Date().toLocaleString('ar-EG'),
                 timestamp: new Date().getTime()
             });
-            
+
             saveDebts();
             updateStats();
             renderDebts();
             editModal.style.display = 'none';
-            
             showNotification('تم تعديل قيمة الدين بنجاح');
         }
 
         function addToDebtAmount() {
             const amount = parseInt(document.getElementById('add-amount').value);
             const description = document.getElementById('add-description').value.trim();
-            
+
             if (!amount || amount <= 0) {
                 showNotification('يرجى إدخال مبلغ صحيح', 'error');
                 return;
             }
-            
+
             const debtIndex = debts.findIndex(d => d.id === currentDebtId);
             debts[debtIndex].amount += amount;
-            
+
             debts[debtIndex].history.push({
                 id: generateId(),
                 type: 'add',
@@ -283,12 +353,11 @@
                 date: new Date().toLocaleString('ar-EG'),
                 timestamp: new Date().getTime()
             });
-            
+
             saveDebts();
             updateStats();
             renderDebts();
             addModal.style.display = 'none';
-            
             showNotification('تم إضافة المبلغ إلى الدين بنجاح');
         }
 
@@ -296,10 +365,10 @@
         function showHistory(id) {
             const debt = debts.find(d => d.id === id);
             const historyList = document.getElementById('history-list');
-            
+
             historyList.innerHTML = debt.history.map(record => {
                 let recordHtml = '';
-                
+
                 if (record.type === 'new') {
                     recordHtml = `
                         <div class="history-item">
@@ -365,49 +434,49 @@
                         </div>
                     `;
                 }
-                
+
                 return recordHtml;
             }).join('');
-            
+
             historyModal.style.display = 'flex';
         }
 
         // حذف عنصر من السجل
         function deleteHistoryItem(debtId, historyId) {
             if (!confirm('هل أنت متأكد من حذف هذه العملية من السجل؟')) return;
-            
+
             const debtIndex = debts.findIndex(d => d.id === debtId);
             if (debtIndex === -1) return;
-            
+
             // البحث عن العملية في السجل
             const historyIndex = debts[debtIndex].history.findIndex(h => h.id === historyId);
             if (historyIndex === -1) return;
-            
+
             const historyItem = debts[debtIndex].history[historyIndex];
-            
+
             // لا يمكن حذف عملية إنشاء الدين الأساسية
             if (historyItem.type === 'new' && debts[debtIndex].history.length > 1) {
                 showNotification('لا يمكن حذف عملية إنشاء الدين الأساسية طالما توجد عمليات أخرى مرتبطة بها', 'error');
                 return;
             }
-            
+
             // حذف العملية من السجل
             debts[debtIndex].history.splice(historyIndex, 1);
-            
+
             // إذا كان هذا هو العنصر الأخير في السجل، احذف الدين بالكامل
             if (debts[debtIndex].history.length === 0) {
                 debts.splice(debtIndex, 1);
             }
-            
+
             saveDebts();
             updateStats();
             renderDebts();
-            
+
             // إعادة فتح نافذة السجل إذا كانت مفتوحة
             if (historyModal.style.display === 'flex') {
                 showHistory(debtId);
             }
-            
+
             showNotification('تم حذف العملية من السجل');
         }
 
@@ -428,7 +497,7 @@
             const totalAmount = debts.reduce((sum, debt) => sum + debt.amount, 0);
             const debtorsCount = debts.length;
             const activeDebts = debts.filter(d => d.amount > 0).length;
-            
+
             totalAmountElement.textContent = `${totalAmount} ج.م`;
             debtorsCountElement.textContent = debtorsCount;
             activeDebtsElement.textContent = activeDebts;
@@ -445,7 +514,7 @@
             notification.className = 'notification';
             notification.classList.add(type === 'error' ? 'error' : 'success');
             notification.classList.add('show');
-            
+
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);

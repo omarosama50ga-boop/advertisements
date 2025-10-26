@@ -1,93 +1,112 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2026869167517898"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2026869167517898" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-2026869167517898">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدارة الذمم المالية - مطبعة</title>
+    <title>DARK - نظام إدارة الذمم المالية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">    
-  
-    
- 
+   <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-    
-    <div class=
-    "app-container">
+    <div class="app-container">
         <header>
-            <h1>متابعه الفلوس التي لي في الخارج</h1>
-            <p>إدارة واستقصاء المستحقات والديون بكفاءة</p>
-            <div class="printing-badge">     نظام مفتوح للجميع </div>
-        </header>
-
-        <div class="stats-container">
-            <div class="stat-card total-card">
-                <h3 id="total-amount">0 ج.م</h3>
-                <p>إجمالي المستحقات</p>
-            </div>
-            <div class="stat-card count-card">
-                <h3 id="debtors-count">0</h3>
-                <p>عدد المدينين</p>
-            </div>
-            <div class="stat-card pending-card">
-                <h3 id="active-debts">0</h3>
-                <p>ديون قائمة</p>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h2>تسجيل مدين جديد</h2>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="new-name">اسم المدين *</label>
-                    <input type="text" id="new-name" placeholder="أدخل اسم المدين">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>DARK - نظام إدارة الذمم المالية</h1>
+                    <p>إدارة واستقصاء المستحقات والديون بكفاءة</p>
+                    <div class="printing-badge"> نظام مفتوح للجميع </div>
                 </div>
-                <div class="form-group">
-                    <label for="new-amount">قيمة الدين (ج.م) *</label>
-                    <input type="number" id="new-amount" placeholder="المبلغ المستحق" min="1">
-                </div>
-                <div class="form-group">
-                    <label for="new-phone">رقم الهاتف</label>
-                    <input type="tel" id="new-phone" placeholder="رقم الهاتف (اختياري)">
-                </div>
-            </div>
-            <button id="add-debt-btn" class="btn">
-                <i class="fas fa-plus-circle"></i> إضافة مدين جديد
-            </button>
-        </div>
-
-        <div class="search-section">
-            <h2>البحث عن المدينين</h2>
-            <div class="search-container">
-                <input type="text" id="search-input" class="search-input" placeholder="ابحث باسم المدين...">
-                <button id="clear-search" class="btn">
-                    <i class="fas fa-times"></i> مسح البحث
+                <button class="dark-mode-toggle" id="dark-mode-toggle">
+                    <i class="fas fa-moon"></i> وضع الليل
                 </button>
             </div>
-            <div class="filter-container">
-                <button class="filter-btn active" data-filter="all">الكل</button>
-                <button class="filter-btn" data-filter="active">ديون قائمة</button>
-                <button class="filter-btn" data-filter="paid">مسددة</button>
-                <button class="filter-btn" data-filter="large">ديون كبيرة (أكثر من 1000 ج.م)</button>
+            
+            <!-- روابط التنقل -->
+            <div class="nav-links">
+                <a href="#" class="nav-link" id="about-link">من نحن</a>
+                <a href="#" class="nav-link" id="contact-link">اتصل بنا</a>
+                <a href="#" class="nav-link" id="privacy-link">سياسة الخصوصية</a>
+                <a href="#" class="nav-link" id="terms-link">شروط الاستخدام</a>
             </div>
-        </div>
+        </header>
 
-        <div class="debts-section">
-            <h2>سجل الذمم المالية</h2>
-            <div class="debts-grid" id="debts-container">
-                <div class="no-debts">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <p>لا توجد ديون مسجلة في النظام</p>
+        <!-- المحتوى الرئيسي للتطبيق -->
+        <div id="main-content">
+            <div class="stats-container">
+                <div class="stat-card total-card">
+                    <h3 id="total-amount">0 ج.م</h3>
+                    <p>إجمالي المستحقات</p>
                 </div>
+                <div class="stat-card count-card">
+                    <h3 id="debtors-count">0</h3>
+                    <p>عدد المدينين</p>
+                </div>
+                <div class="stat-card pending-card">
+                    <h3 id="active-debts">0</h3>
+                    <p>ديون قائمة</p>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>تسجيل مدين جديد</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="new-name">اسم المدين *</label>
+                        <input type="text" id="new-name" placeholder="أدخل اسم المدين">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-amount">قيمة الدين (ج.م) *</label>
+                        <input type="number" id="new-amount" placeholder="المبلغ المستحق" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-phone">رقم الهاتف</label>
+                        <input type="tel" id="new-phone" placeholder="رقم الهاتف (اختياري)">
+                    </div>
+                </div>
+                <button id="add-debt-btn" class="btn">
+                    <i class="fas fa-plus-circle"></i> إضافة مدين جديد
+                </button>
+            </div>
+
+            <div class="search-section">
+                <h2>البحث عن المدينين</h2>
+                <div class="search-container">
+                    <input type="text" id="search-input" class="search-input" placeholder="ابحث باسم المدين...">
+                    <button id="clear-search" class="btn">
+                        <i class="fas fa-times"></i> مسح البحث
+                    </button>
+                </div>
+                <div class="filter-container">
+                    <button class="filter-btn active" data-filter="all">الكل</button>
+                    <button class="filter-btn" data-filter="active">ديون قائمة</button>
+                    <button class="filter-btn" data-filter="paid">مسددة</button>
+                    <button class="filter-btn" data-filter="large">ديون كبيرة (أكثر من 1000 ج.م)</button>
+                </div>
+            </div>
+
+            <div class="debts-section">
+                <h2>سجل الذمم المالية</h2>
+                <div class="debts-grid" id="debts-container">
+                    <div class="no-debts">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <p>لا توجد ديون مسجلة في النظام</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- زر حذف جميع البيانات -->
+            <div class="delete-all-container">
+                <button class="btn-delete-all" id="delete-all-btn">
+                    <i class="fas fa-trash"></i> حذف جميع البيانات
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- النوافذ المنبثقة -->
+    <!-- النوافذ المنبثقة الأصلية -->
     <div class="modal" id="deduct-modal">
         <div class="modal-content">
             <h3>تسديد جزء من الدين</h3>
@@ -135,9 +154,72 @@
         </div>
     </div>
 
+    <!-- النوافذ المنبثقة الجديدة -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <h3>من نحن</h3>
+            <div class="modal-text">
+                <p>نحن فريق متخصص في تطوير حلول البرمجيات لإدارة الأعمال الصغيرة والمتوسطة.</p>
+                <p>يهدف نظام DARK لإدارة الذمم المالية إلى  الجميع  والشركات  على تنظيم وإدارة مستحقاتها المالية بشكل فعال وسهل.</p>
+            </div>
+            <div class="modal-buttons">
+                <button id="about-close" class="action-btn btn-delete">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="contact-modal">
+        <div class="modal-content">
+            <h3>اتصل بنا</h3>
+            <div class="modal-text">
+                <p>للتواصل معنا أو للإبلاغ عن مشكلة في النظام:</p>
+                <p><i class="fas fa-envelope"></i> البريد الإلكتروني: omarosama50ga@gmail.com</p>
+                <p><i class="fas fa-phone"></i> الهاتف: <a href="https://wa.me/201556527636" style="color: var(--primary); text-decoration: none;">01556527636</a> (انقر للتواصل عبر واتساب)</p>
+            </div>
+            <div class="modal-buttons">
+                <button id="contact-close" class="action-btn btn-delete">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="privacy-modal">
+        <div class="modal-content">
+            <h3>سياسة الخصوصية</h3>
+            <div class="modal-text">
+                <p>نحن نحرص على خصوصية بياناتك. جميع البيانات التي تدخلها في النظام يتم تخزينها محلياً على جهازك فقط.</p>
+                <p>لا نقوم بجمع أو مشاركة أي بيانات مع أطراف خارجية.</p>
+                <p>يمكنك مسح جميع البيانات في أي وقت من خلال زر "حذف جميع البيانات".</p>
+            </div>
+            <div class="modal-buttons">
+                <button id="privacy-close" class="action-btn btn-delete">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="terms-modal">
+        <div class="modal-content">
+            <h3>شروط الاستخدام</h3>
+            <div class="modal-text">
+                <p>باستخدامك لهذا النظام، فإنك توافق على الشروط التالية:</p>
+                <ul>
+                    <li>النظام مقدم مجاناً للاستخدام الشخصي والتجاري</li>
+                    <li>النظام مفتوح للجميع ولا توجد أي رسوم للاستخدام</li>
+                    <li>أنت المسؤول الوحيد عن البيانات التي تدخلها في النظام</li>
+                    <li>نحن لا نتحمل مسؤولية أي خسائر ناتجة عن استخدام النظام</li>
+                    <li>يمكن تعديل النظام وتطويره حسب احتياجاتك</li>
+                </ul>
+            </div>
+            <div class="modal-buttons">
+                <button id="terms-close" class="action-btn btn-delete">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
     <!-- إشعارات -->
     <div class="notification" id="notification"></div>
 
-  <script src="main.js"></script>
+    <script src="main.js">   </script>
+  
+    
 </body>
 </html>
